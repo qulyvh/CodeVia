@@ -1,0 +1,361 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --c-ink-950: 3 5 12;
+    --c-ink-900: 5 7 15;
+    --c-ink-800: 8 12 25;
+    --c-ink-700: 13 19 38;
+    --c-ink-600: 19 26 51;
+    --c-ink-500: 27 36 69;
+    --c-ink-400: 38 49 92;
+    --c-white: 255 255 255;
+  }
+
+  /* Gündüz rejimi */
+  html.light {
+    color-scheme: light;
+    --c-ink-950: 244 246 251;
+    --c-ink-900: 255 255 255;
+    --c-ink-800: 241 245 249;
+    --c-ink-700: 226 232 240;
+    --c-ink-600: 203 213 225;
+    --c-ink-500: 148 163 184;
+    --c-ink-400: 100 116 139;
+    --c-white: 15 23 42;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-ink-950 text-slate-200 font-sans antialiased;
+    background-image:
+      radial-gradient(1100px 620px at 12% -8%, rgba(99, 102, 241, 0.16), transparent 60%),
+      radial-gradient(900px 560px at 88% 4%, rgba(34, 211, 238, 0.12), transparent 62%),
+      radial-gradient(1000px 700px at 50% 110%, rgba(168, 85, 247, 0.12), transparent 65%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.35);
+    color: #fff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-white font-extrabold tracking-tight;
+  }
+
+  input,
+  select,
+  textarea {
+    color-scheme: dark;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-slate-500;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.05);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.55), rgba(34, 211, 238, 0.4));
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.85), rgba(34, 211, 238, 0.7));
+    background-clip: padding-box;
+  }
+}
+
+@layer components {
+  /* ---------- Surfaces ---------- */
+  .glass {
+    @apply border border-white/10 bg-white/[0.035] backdrop-blur-xl;
+  }
+
+  .glass-strong {
+    @apply border border-white/10 bg-ink-800/80 backdrop-blur-2xl;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-white/10 bg-white/[0.03] shadow-card backdrop-blur-xl;
+  }
+
+  .panel-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/40 hover:bg-white/[0.06] hover:shadow-glow;
+  }
+
+  .divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/12 to-transparent;
+  }
+
+  /* ---------- Cards with 3D depth ---------- */
+  .card-3d {
+    @apply relative rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-6 shadow-card backdrop-blur-xl transition-all duration-500;
+    transform-style: preserve-3d;
+  }
+  .card-3d:hover {
+    @apply border-brand-400/40 shadow-glow;
+    transform: translateY(-6px) rotateX(2deg);
+  }
+  .card-3d::after {
+    content: '';
+    @apply pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500;
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 0%), rgba(99, 102, 241, 0.16), transparent 45%);
+  }
+  .card-3d:hover::after {
+    @apply opacity-100;
+  }
+
+  /* ---------- Text ---------- */
+  .gradient-text {
+    @apply bg-brand-grad bg-clip-text text-transparent;
+    background-size: 220% 220%;
+    @apply animate-gradient-x;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-slate-300;
+  }
+
+  .muted {
+    @apply text-slate-400;
+  }
+
+  /* ---------- Inputs ---------- */
+  .field {
+    @apply w-full rounded-xl border border-white/12 bg-ink-900/70 px-4 py-3 text-sm text-white outline-none transition-all duration-200 placeholder:text-slate-500;
+  }
+  .field:hover {
+    @apply border-white/20;
+  }
+  .field:focus {
+    @apply border-brand-400/70 bg-ink-900 ring-4 ring-brand-500/15;
+  }
+  .field-error {
+    @apply border-rose-500/70 bg-rose-500/[0.06] ring-4 ring-rose-500/10;
+  }
+  .field-ok {
+    @apply border-emerald-500/60 ring-4 ring-emerald-500/10;
+  }
+
+  .hint {
+    @apply mt-1.5 text-xs text-slate-400;
+  }
+  .hint-error {
+    @apply mt-1.5 flex items-center gap-1.5 text-xs font-medium text-rose-400;
+  }
+  .hint-ok {
+    @apply mt-1.5 flex items-center gap-1.5 text-xs font-medium text-emerald-400;
+  }
+}
+
+@layer utilities {
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  .noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .perspective {
+    perspective: 1400px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .animate-delay-100 {
+    animation-delay: 0.1s;
+  }
+  .animate-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animate-delay-300 {
+    animation-delay: 0.3s;
+  }
+  .animate-delay-500 {
+    animation-delay: 0.5s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ==================================================================
+   GÜNDÜZ REJİMİ ÜZƏRİNDƏN YAZMALAR
+   Yalnız işıq fonunda oxunması çətin olan tonları tənzimləyir.
+   ================================================================== */
+html.light body {
+  color: #334155;
+  background-image:
+    radial-gradient(1100px 620px at 12% -8%, rgba(99, 102, 241, 0.1), transparent 60%),
+    radial-gradient(900px 560px at 88% 4%, rgba(34, 211, 238, 0.1), transparent 62%),
+    radial-gradient(1000px 700px at 50% 110%, rgba(168, 85, 247, 0.08), transparent 65%);
+}
+
+html.light input,
+html.light select,
+html.light textarea {
+  color-scheme: light;
+}
+
+/* Mətn tonları */
+html.light .text-slate-100,
+html.light .text-slate-200 {
+  color: #1e293b;
+}
+html.light .text-slate-300 {
+  color: #334155;
+}
+html.light .text-slate-400 {
+  color: #556074;
+}
+html.light .text-slate-500 {
+  color: #6b7688;
+}
+html.light .label {
+  color: #334155;
+}
+html.light .muted,
+html.light .hint {
+  color: #556074;
+}
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* İşıq çalarlı köməkçi mətn rəngləri (tünd fonda nəzərdə tutulmuş) */
+html.light .text-brand-200,
+html.light .text-brand-300 {
+  color: #4f46e5;
+}
+html.light .text-accent-200,
+html.light .text-accent-300 {
+  color: #0e7490;
+}
+html.light .text-neon-300,
+html.light .text-neon-400 {
+  color: #7e22ce;
+}
+html.light .text-emerald-200,
+html.light .text-emerald-300 {
+  color: #047857;
+}
+html.light .text-rose-200,
+html.light .text-rose-300 {
+  color: #be123c;
+}
+html.light .text-amber-200,
+html.light .text-amber-300 {
+  color: #b45309;
+}
+html.light .text-sky-200,
+html.light .text-sky-300 {
+  color: #0369a1;
+}
+
+/* Doyğun (solid) rəngli fonlarda ağ mətn qalsın */
+html.light :is(
+    [class~='bg-brand-grad'],
+    [class~='bg-brand-500'],
+    [class~='bg-brand-600'],
+    [class~='bg-accent-500'],
+    [class~='bg-neon-500'],
+    [class~='bg-emerald-500'],
+    [class~='bg-emerald-500/90'],
+    [class~='bg-rose-500'],
+    [class~='bg-rose-500/90'],
+    [class~='bg-amber-500']
+  ) {
+  color: #fff;
+}
+
+/* Səthlər daha aydın görünsün deyə */
+html.light .panel {
+  background-color: #ffffff;
+}
+html.light .glass {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+html.light .glass-strong {
+  background-color: rgba(255, 255, 255, 0.92);
+}
+html.light .card-3d {
+  background-image: linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+html.light .card-3d::after {
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 0%), rgba(99, 102, 241, 0.1), transparent 45%);
+}
+html.light .field {
+  background-color: #ffffff;
+}
+html.light .field:focus {
+  background-color: #ffffff;
+}
+html.light .grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+}
+html.light .noise::before {
+  opacity: 0.12;
+}
+html.light .shadow-card {
+  box-shadow: 0 18px 40px -28px rgba(15, 23, 42, 0.35);
+}
+
